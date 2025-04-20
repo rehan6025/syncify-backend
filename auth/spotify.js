@@ -129,17 +129,20 @@ router.post('/store-tokens', (req, res) => {
     res.cookie('spotify_access_token', access_token, { 
         httpOnly: true, 
         secure: true, 
-        sameSite: "None" 
+        sameSite: "None" ,
+        path: "/"
     });
     res.cookie('spotify_refresh_token', refresh_token, { 
         httpOnly: true, 
         secure: true, 
-        sameSite: "None" 
+        sameSite: "None",
+        path: "/"
     });
     res.cookie('spotify_token_expiry', Date.now() + (expires_in * 1000), { 
         httpOnly: false, 
         secure: true, 
-        sameSite: "None" 
+        sameSite: "None",
+        path: "/"
     });
 
     res.status(200).json({ message: 'Cookies set successfully' });
