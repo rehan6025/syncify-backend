@@ -17,7 +17,7 @@ const allowedOrigins = [
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cors({
-    origin: allowedOrigins,
+    origin: 'https://syncify-frontend-beta.vercel.app/',
     credentials: true
 }));
 app.use('/auth/spotify', spotifyRouter)
