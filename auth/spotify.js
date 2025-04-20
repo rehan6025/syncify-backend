@@ -49,7 +49,7 @@ const getSpotifyTokens = async (code) => {
                 }
             }
         );
-        console.log(access_token);
+        console.log(response.data.access_token);
         
         return {
             access_token: response.data.access_token,
