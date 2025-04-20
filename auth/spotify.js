@@ -49,7 +49,8 @@ const getSpotifyTokens = async (code) => {
                 }
             }
         );
-
+        console.log(access_token);
+        
         return {
             access_token: response.data.access_token,
             refresh_token: response.data.refresh_token,
