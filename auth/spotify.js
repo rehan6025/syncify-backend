@@ -77,6 +77,7 @@ router.get('/callback', async (req, res) => {
         res.cookie('spotify_refresh_token', refresh_token, { httpOnly: true, secure: true ,sameSite: "None"})
         res.cookie('spotify_token_expiry', Date.now() + (expires_in * 1000), { httpOnly: false, secure: true, sameSite: "None" })
 
+        console.log('setting access_token', access_token);
         res.redirect(`${process.env.FRONTEND_URL}/profile`);
     } catch (error) {
         console.log('spotify :: callback error ::', error);
