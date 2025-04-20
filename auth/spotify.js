@@ -113,6 +113,7 @@ router.get('/logout', (req, res) => {
 router.get('/playlists',spotifyAuthMiddleware, async (req, res) => {
     try {
         const accessToken = req.accessToken;
+        console.log('accessToken in /playlists',accessToken)
         const playlists = await getPlaylists(accessToken);
         res.json(playlists)
         
