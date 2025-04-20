@@ -65,6 +65,19 @@ const getSpotifyTokens = async (code) => {
 }
 
 
+router.get('/test-cookies', (req, res) => {
+    res.cookie('test_cookie', 'test_value', { 
+        httpOnly: true, 
+        secure: true,
+        sameSite: "None" 
+    });
+    res.send('Cookie set');
+});
+
+router.get('/read-cookies', (req, res) => {
+    console.log('Cookies received:', req.cookies);
+    res.json({ cookies: req.cookies });
+});
 
 
 // router.get('/callback', async (req, res) => {
