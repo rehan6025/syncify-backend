@@ -33,6 +33,8 @@ const refreshSpotifyToken = async (refreshToken) => {
 
 const spotifyAuthMiddleware = async (req,res,next) => {
     try {
+        console.log('🎫 Middleware cookies:', req.cookies);
+
         let access_token = req.cookies.spotify_access_token;
         const refresh_token = req.cookies.spotify_refresh_token;
         const expiry = req.cookies.spotify_token_expiry;
