@@ -119,7 +119,7 @@ router.get('/callback', async (req, res) => {
 });
 
 
-router.post('/set-cookie', (req, res) => {
+router.post('/store-tokens', (req, res) => {
     const { access_token, refresh_token, expires_in } = req.body;
 
     if (!access_token || !refresh_token || !expires_in) {
