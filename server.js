@@ -9,6 +9,8 @@ const youtubeRouter = require('./auth/youtube')
 const logoutRouter = require('./auth/logout')
 
 
+
+//fix spotify 
 const allowedOrigins = [
     'http://localhost:5173',
     process.env.FRONTEND_URL
