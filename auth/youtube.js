@@ -6,7 +6,7 @@ const { google } = require('googleapis')
 const cookieParser = require('cookie-parser')
 const { youtubeAuthMiddleware, refreshYoutubeToken } = require('../utils/youtubeAuth')
 const YouTubeMatcher = require('../services/youtubeMatcher');
-
+//app worked just need registration/verification on google cloud console 
 const oauth2Client = new google.auth.OAuth2(
     process.env.YT_CLIENT_ID,
     process.env.YT_CLIENT_SECRET,
