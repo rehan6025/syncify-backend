@@ -43,12 +43,15 @@ router.get('/callback', async (req, res) => {
         res.cookie('yt_access_token', tokens.access_token, {
             httpOnly: true,
             secure: true,
+            sameSite: "None",
             maxAge: tokens.expiry_date - Date.now()
         });
 
         res.cookie('yt_refresh_token', tokens.refresh_token, {
             httpOnly: true,
             secure: true,
+            sameSite: "None"
+
         });
 
         res.redirect(`${process.env.FRONTEND_URL}/profile`);

@@ -49,7 +49,8 @@ const getSpotifyTokens = async (code) => {
                 }
             }
         );
-
+        console.log(response.data.access_token);
+        
         return {
             access_token: response.data.access_token,
             refresh_token: response.data.refresh_token,
@@ -64,25 +65,89 @@ const getSpotifyTokens = async (code) => {
 }
 
 
+router.get('/test-cookies', (req, res) => {
+    res.cookie('test_cookie', 'test_value', { 
+        httpOnly: true, 
+        secure: true,
+        sameSite: "None" 
+    });
+    res.send('Cookie set');
+});
+
+router.get('/read-cookies', (req, res) => {
+    console.log('Cookies received:', req.cookies);
+    res.json({ cookies: req.cookies });
+});
+
+
+// router.get('/callback', async (req, res) => {
+//     try {
+//         const { code } = req.query;
+
+//         const { access_token, refresh_token, expires_in } = await getSpotifyTokens(code);
+
+//         //set secure http only token
+//         res.cookie('spotify_access_token', access_token, { httpOnly: true, secure: true ,sameSite: "None"})
+//         res.cookie('spotify_refresh_token', refresh_token, { httpOnly: true, secure: true ,sameSite: "None"})
+//         res.cookie('spotify_token_expiry', Date.now() + (expires_in * 1000), { httpOnly: false, secure: true, sameSite: "None" })
+
+//         console.log('setting access_token', access_token);
+//         res.redirect(`${process.env.FRONTEND_URL}/profile`);
+//     } catch (error) {
+//         console.log('spotify :: callback error ::', error);
+
+//     }
+// })
 
 
 router.get('/callback', async (req, res) => {
     try {
         const { code } = req.query;
 
+        if (!code) return res.status(400).send('Missing authorization code');
+
         const { access_token, refresh_token, expires_in } = await getSpotifyTokens(code);
 
-        //set secure http only token
-        res.cookie('spotify_access_token', access_token, { httpOnly: true, secure: true })
-        res.cookie('spotify_refresh_token', refresh_token, { httpOnly: true, secure: true })
-        res.cookie('spotify_token_expiry', Date.now() + (expires_in * 1000), { httpOnly: false, secure: true })
+        // 🔁 Redirect to frontend with token in URL
+        const redirectURL = `${process.env.FRONTEND_URL}/loggedin?access_token=${access_token}&refresh_token=${refresh_token}&expires_in=${expires_in}`;
+        res.redirect(redirectURL);
 
-        res.redirect(`${process.env.FRONTEND_URL}/profile`);
     } catch (error) {
-        console.log('spotify :: callback error ::', error);
-
+        console.error('spotify :: callback error ::', error);
+        res.status(500).send('Authentication failed');
     }
-})
+});
+
+
+router.post('/store-tokens', (req, res) => {
+    const { access_token, refresh_token, expires_in } = req.body;
+
+    if (!access_token || !refresh_token || !expires_in) {
+        return res.status(400).json({ error: 'Missing token data' });
+    }
+
+    res.cookie('spotify_access_token', access_token, { 
+        httpOnly: true, 
+        secure: true, 
+        sameSite: "None" ,
+        path: "/"
+    });
+    res.cookie('spotify_refresh_token', refresh_token, { 
+        httpOnly: true, 
+        secure: true, 
+        sameSite: "None",
+        path: "/"
+    });
+    res.cookie('spotify_token_expiry', Date.now() + (expires_in * 1000), { 
+        httpOnly: false, 
+        secure: true, 
+        sameSite: "None",
+        path: "/"
+    });
+
+    res.status(200).json({ message: 'Cookies set successfully' });
+});
+
 
 
 router.get('/logout', (req, res) => {
@@ -111,6 +176,7 @@ router.get('/logout', (req, res) => {
 router.get('/playlists',spotifyAuthMiddleware, async (req, res) => {
     try {
         const accessToken = req.accessToken;
+        console.log('accessToken in /playlists',accessToken)
         const playlists = await getPlaylists(accessToken);
         res.json(playlists)
         

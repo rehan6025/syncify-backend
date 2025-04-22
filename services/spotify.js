@@ -4,6 +4,7 @@ exports.getPlaylists = async (accessToken) => {
     try {
         let playlists = []
         let url = 'https://api.spotify.com/v1/me/playlists?limit=50';
+        console.log("📦 Access Token:", accessToken);
 
         while (url) {
             const res = await axios.get(url, {
@@ -22,7 +23,18 @@ exports.getPlaylists = async (accessToken) => {
         }
         return playlists;
     } catch (error) {
-        console.error('Failed to fetch playlists:', error);
+        console.error('❌ Failed to fetch playlists');
+
+        if (error.response) {
+            console.error('📉 Status Code:', error.response.status);
+            console.error('📦 Response Data:', error.response.data);
+        } else if (error.request) {
+            console.error('📡 No response received from Spotify');
+            console.error(error.request);
+        } else {
+            console.error('⚠️ Error Message:', error.message);
+        }
+
         throw error;
     }
 }
