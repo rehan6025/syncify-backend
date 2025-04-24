@@ -16,5 +16,5 @@ Node.js/Express server for playlist transfers between Spotify and YouTube.
 
 ## 📡 API Endpoints  
 ```plaintext
-POST /api/transfer   - Start playlist transfer  
-GET  /api/playlists - Fetch user's playlists  
+POST /api/youtube/batch-match   - Start playlist transfer  
+GET  /api/spotify/playlists - Fetch user's playlists  
