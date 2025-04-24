@@ -12,7 +12,7 @@ Node.js/Express server for playlist transfers between Spotify and YouTube.
 - **Runtime**: Node.js  
 - **Framework**: Express  
 - **APIs**: Spotify Web API, YouTube Data API v3  
-- **Auth**: JWT, OAuth2  
+- **Auth**: OAuth2  
 
 ## 📡 API Endpoints  
 ```plaintext
